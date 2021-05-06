@@ -16,7 +16,7 @@
 //Developed by : MakersMakingChange
 //Firmware : LipSync_Firmware
 //VERSION: 2.7 (16 September 2019) 
-
+//Ammended with profiling code
 
 #include <EEPROM.h>
 #include <Mouse.h>
@@ -109,6 +109,11 @@ int puff1, puff2;
 
 bool settingsEnabled = false; 
 
+#define TEST_CYCLE_PIN 14                          // Test pin for cycle timing
+#define TEST_MOVEMENT_PIN 15                       // Test pin for cursor movement
+#define TEST_PRESSURE_PIN 16                       // Test pin for pressure sensor
+
+
 //-----------------------------------------------------------------------------------//
 
 //***MICROCONTROLLER AND PERIPHERAL MODULES CONFIGURATION***//
@@ -139,6 +144,11 @@ void setup() {
   pinMode(11, INPUT_PULLUP);
   pinMode(12, INPUT_PULLUP);
   pinMode(13, INPUT_PULLUP);
+
+  // Test Pins
+  pinMode(TEST_CYCLE_PIN, OUTPUT);                // Test pin for cycle timing
+  pinMode(TEST_MOVEMENT_PIN, OUTPUT);             // Test pin for cursor movement
+  pinMode(TEST_PRESSURE_PIN, OUTPUT);             // Test pin for pressure sensor
 
 
   //while(!Serial1);
@@ -202,6 +212,15 @@ void setup() {
 //***START OF MAIN LOOP***//
 
 void loop() {
+
+  //loop cycle speed measuring
+  // toggle the pin output each loop. 
+  if (digitalRead(TEST_CYCLE_PIN)) {
+    digitalWrite(TEST_CYCLE_PIN, LOW); // turn the LED off by making the voltage LOW
+  } else {
+    digitalWrite(TEST_CYCLE_PIN, HIGH); // turn the LED on (HIGH is the voltage level)
+  }
+
   
   settingsEnabled=serialSettings(settingsEnabled);       //Check to see if setting option is enabled in Lipsync
 
