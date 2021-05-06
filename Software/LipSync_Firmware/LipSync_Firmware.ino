@@ -243,23 +243,31 @@ void loop() {
     if (pollCounter >= 3) {
         if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
           //Serial.println("quad1");
+          digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
+          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xHighYLow > xHighYHigh) && (xHighYLow > xLowYLow) && (xHighYLow > xLowYHigh)) {
           //Serial.println("quad4");
+          digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorHigh(xHigh), yCursorLow(yLow), 0);
           delay(cursorDelay);
+          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xLowYLow >= xHighYHigh) && (xLowYLow >= xHighYLow) && (xLowYLow >= xLowYHigh)) {
           //Serial.println("quad3");
+          digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorLow(xLow), yCursorLow(yLow), 0);
           delay(cursorDelay);
+          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xLowYHigh > xHighYHigh) && (xLowYHigh >= xHighYLow) && (xLowYHigh >= xLowYLow)) {
           //Serial.println("quad2");
+          digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorLow(xLow), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
+          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         }
     }
