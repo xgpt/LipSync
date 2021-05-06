@@ -149,6 +149,9 @@ void setup() {
   pinMode(TEST_CYCLE_PIN, OUTPUT);                // Test pin for cycle timing
   pinMode(TEST_MOVEMENT_PIN, OUTPUT);             // Test pin for cursor movement
   pinMode(TEST_PRESSURE_PIN, OUTPUT);             // Test pin for pressure sensor
+  
+  digitalWrite(TEST_CYCLE_PIN, LOW);
+  digitalWrite(TEST_MOVEMENT_PIN, LOW);
 
 
   //while(!Serial1);
@@ -213,6 +216,8 @@ void setup() {
 
 void loop() {
 
+  digitalWrite(TEST_MOVEMENT_PIN, LOW);
+  
   //loop cycle speed measuring
   // toggle the pin output each loop. 
   if (digitalRead(TEST_CYCLE_PIN)) {
@@ -246,28 +251,24 @@ void loop() {
           digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
-          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xHighYLow > xHighYHigh) && (xHighYLow > xLowYLow) && (xHighYLow > xLowYHigh)) {
           //Serial.println("quad4");
           digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorHigh(xHigh), yCursorLow(yLow), 0);
           delay(cursorDelay);
-          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xLowYLow >= xHighYHigh) && (xLowYLow >= xHighYLow) && (xLowYLow >= xLowYHigh)) {
           //Serial.println("quad3");
           digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorLow(xLow), yCursorLow(yLow), 0);
           delay(cursorDelay);
-          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         } else if ((xLowYHigh > xHighYHigh) && (xLowYHigh >= xHighYLow) && (xLowYHigh >= xLowYLow)) {
           //Serial.println("quad2");
           digitalWrite(TEST_MOVEMENT_PIN, HIGH); 
           Mouse.move(xCursorLow(xLow), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
-          digitalWrite(TEST_MOVEMENT_PIN, LOW);
           pollCounter = 0;
         }
     }
