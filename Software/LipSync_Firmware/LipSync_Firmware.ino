@@ -168,7 +168,8 @@ void setup() {
   pinMode(12, INPUT_PULLUP);
   pinMode(13, INPUT_PULLUP);
 
-
+  startupCheck();                                 //Check if both buttons pushed to enter diagnostic mode
+  
   Mouse.begin();                                  //Initialize the HID mouse functions
   delay(1000);
   getModelNumber(false);                          //Get LipSync model number 
@@ -290,7 +291,18 @@ void loop() {
 
 //-----------------------------------------------------------------------------------//
 
+//***STARTUP CHECK FUNCTION***//
 
+void startupCheck(){
+  if (digitalRead(BUTTON_UP_PIN) == LOW){
+    Serial.println("Diagnostic Mode");
+     while(1){
+    delay(250);
+  }
+  }
+ 
+  
+}
 //***GET MODEL NUMBER FUNCTION***//
 
 void getModelNumber(bool responseEnabled) {
@@ -1049,7 +1061,7 @@ void pushButtonHandler(int switchPin1, int switchPin2) {
     //Cursor speed control push button functions below
   if (digitalRead(switchPin1) == LOW) {
     delay(200);
-    clearButtonAction();
+    clearButtonAction();  //Clear any mouse button pushes
     delay(50);
     if (digitalRead(switchPin2) == LOW) {
       setCursorCalibration(false);                      //Call joystick calibration if both push button up and down are pressed 
@@ -1060,7 +1072,7 @@ void pushButtonHandler(int switchPin1, int switchPin2) {
 
   if (digitalRead(switchPin2) == LOW) {
     delay(200);
-    clearButtonAction();
+    clearButtonAction(); //Clear any mouse button pushes
     delay(50);
     if (digitalRead(switchPin1) == LOW) {
       setCursorCalibration(false);                      //Call joystick calibration if both push button up and down are pressed 
