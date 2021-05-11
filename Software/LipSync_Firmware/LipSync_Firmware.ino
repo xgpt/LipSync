@@ -161,11 +161,10 @@ void setup() {
   
   Serial.begin(115200);                           //Setting baud rate for serial communication which is used for diagnostic data returned from Bluetooth and microcontroller
 
-
-  startupCheck();                                 //Check if both buttons pushed to enter diagnostic mode
-
   initializePins();                               //Initialize Arduino input and output pins
-
+ 
+  startupCheck();                                 //Check if both buttons pushed to enter diagnostic mode
+ 
   Mouse.begin();                                  //Initialize the HID mouse functions
   delay(1000);
   
@@ -257,15 +256,15 @@ void cursorHandler(void) {
   
   // Set FSR values for next skip check
   xHighPrev = xHigh;
-  xLowPrev = xLow;
+  xLowPrev  = xLow;
   yHighPrev = yHigh;
-  yLowPrev = yLow;
+  yLowPrev  = yLow;
 
   // Calculate the magnitude of the movement for each direction / quadrant
   xHighYHigh = sqrt(sq(((xHigh - xHighNeutral) > 0) ? (float)(xHigh - xHighNeutral) : 0.0) + sq(((yHigh - yHighNeutral) > 0) ? (float)(yHigh - yHighNeutral) : 0.0));     //The sq() function raises thr input to power of 2 and is returning the same data type int->int
-  xHighYLow = sqrt(sq(((xHigh - xHighNeutral) > 0) ? (float)(xHigh - xHighNeutral) : 0.0) + sq(((yLow - yLowNeutral) > 0) ? (float)(yLow - yLowNeutral) : 0.0));    //The sqrt() function raises input to power 1/2, returning a float type
-  xLowYHigh = sqrt(sq(((xLow - xLowNeutral) > 0) ? (float)(xLow - xLowNeutral) : 0.0) + sq(((yHigh - yHighNeutral) > 0) ? (float)(yHigh - yHighNeutral) : 0.0));          //These are the vector magnitudes of each quadrant 1-4. Since the FSRs all register
-  xLowYLow = sqrt(sq(((xLow - xLowNeutral) > 0) ? (float)(xLow - xLowNeutral) : 0.0) + sq(((yLow - yLowNeutral) > 0) ? (float)(yLow - yLowNeutral) : 0.0));         //a larger digital value with a positive application force, a large negative difference
+  xHighYLow  = sqrt(sq(((xHigh - xHighNeutral) > 0) ? (float)(xHigh - xHighNeutral) : 0.0) + sq(((yLow - yLowNeutral) > 0) ? (float)(yLow - yLowNeutral) : 0.0));    //The sqrt() function raises input to power 1/2, returning a float type
+  xLowYHigh  = sqrt(sq(((xLow  - xLowNeutral)  > 0) ? (float)(xLow - xLowNeutral) : 0.0) + sq(((yHigh - yHighNeutral) > 0) ? (float)(yHigh - yHighNeutral) : 0.0));          //These are the vector magnitudes of each quadrant 1-4. Since the FSRs all register
+  xLowYLow   = sqrt(sq(((xLow  - xLowNeutral)  > 0) ? (float)(xLow - xLowNeutral) : 0.0) + sq(((yLow - yLowNeutral) > 0) ? (float)(yLow - yLowNeutral) : 0.0));         //a larger digital value with a positive application force, a large negative difference
 
   //Check to see if the joystick has moved outside the deadband
   if ((xHighYHigh > xHighYHighRadius) || (xHighYLow > xHighYLowRadius) || (xLowYLow > xLowYLowRadius) || (xLowYHigh > xLowYHighRadius)) {
@@ -356,9 +355,13 @@ void initializePins(void) {
 void startupCheck(){
   if (digitalRead(BUTTON_UP_PIN) == LOW){
     Serial.println("Diagnostic Mode");
+    //todo LED feedback
+    //todo serial message "Hold until the red light appears to factory reset; press either button to cancel"
      while(1){
-    delay(250);
+    delay(250); //todo secondary check
   }
+
+  
   }
  
   
@@ -1405,6 +1408,7 @@ void ledOn(int ledNumber) {
         digitalWrite(LED_1_PIN, LOW);
         break;
       }
+
   }
 }
 
